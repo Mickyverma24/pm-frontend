@@ -3,10 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './contexts/AuthContext';
 import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
-import Dashboard from './components/dashboard/Dashboard';
-import DemoRedirect from './components/demo/DemoRedirect';
 import Homepage from "./components/homepage/Homepage";
-
+import DemoRedirect from "./components/demo/DemoRedirect";
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
     const { authUser, loading } = useAuthContext();
@@ -24,11 +22,12 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
     return (
-        <AuthProvider>
+        <div>
+             <AuthProvider>
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/demo" element={<Homepage />} />
+                <Route path="/demo" element={<DemoRedirect />} />
                 <Route 
                     path="/dashboard" 
                     element={
@@ -47,6 +46,8 @@ function App() {
                 />
             </Routes>
         </AuthProvider>
+        </div>
+       
     );
 }
 

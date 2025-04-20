@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import socket from "../../utils/socketConnection";
 import MonitorScreen from "../dashboard/MonitorScreen.jsx";
 import { useAuthContext } from "../../contexts/AuthContext";
-
+import './homepage.css'
 export default function Homepage() {
   const [performanceData, setPerformanceData] = useState({});
-  const { authUser } = useAuthContext();
+  const { authUser, logout } = useAuthContext();
 
+  const handleLogout = () =>{
+    logout()
+  }
   useEffect(() => {
     if (!authUser) return;
 
@@ -31,16 +34,15 @@ export default function Homepage() {
   ));
 
   return (
-    
-    <div className="container">
-      {arrayOfMonitors.length > 0 ? (
-        arrayOfMonitors
-      ) : (
-        <div className="text-center mt-5">
-          <h3>No performance data available</h3>
-          <p>Waiting for data from connected machines...</p>
-        </div>
-      )}
-    </div>
+      <div className="container custom">
+        {arrayOfMonitors.length > 0 ? (
+          arrayOfMonitors
+        ) : (
+          <div className="text-center mt-5">
+            <h3>No performance data available</h3>
+            <p>Waiting for data from connected machines...</p>
+          </div>
+        )}
+      </div>
   );
 }
