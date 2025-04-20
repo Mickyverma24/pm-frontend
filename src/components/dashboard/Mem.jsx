@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import drawAnimation from "../utils/canvasMoniterAnimation.js";
+import drawAnimation from "./../../utils/canvasMoniterAnimation.js";
 const Mem = ({ data }) => {
   const { freeMemory, inUseMem, memUsage, totalMemory } = data;
   const memRef = useRef();

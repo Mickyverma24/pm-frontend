@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import socket from '../utils/socketConnection'
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

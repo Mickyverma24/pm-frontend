@@ -5,6 +5,7 @@ import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
 import Dashboard from './components/dashboard/Dashboard';
 import DemoRedirect from './components/demo/DemoRedirect';
+import Homepage from "./components/homepage/Homepage";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -27,12 +28,12 @@ function App() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/demo" element={<DemoRedirect />} />
+                <Route path="/demo" element={<Homepage />} />
                 <Route 
                     path="/dashboard" 
                     element={
                         <ProtectedRoute>
-                            <Dashboard />
+                            <Homepage />
                         </ProtectedRoute>
                     } 
                 />

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef } from "react";
-import drawAnimation from "../utils/canvasMoniterAnimation.js";
+import drawAnimation from "./../../utils/canvasMoniterAnimation";
 const Cpu = ({ data }) => {
   const canvasEl = useRef();
   drawAnimation(canvasEl.current, data.cpuLoad);

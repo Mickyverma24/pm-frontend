@@ -2,13 +2,13 @@ import io from "socket.io-client";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const getSocketOptions = () => {
-    const auth_token = localStorage.getItem('auth_token');
-    return {
-        auth: {
-            token: auth_token || "",
-            clientType: "frontend",
-        },
-    };
+  const apiKey = localStorage.getItem("apiKey");
+  return {
+    auth: {
+      token: apiKey || "",
+      clientType: "frontend",
+    },
+  };
 };
 
 const socket = io.connect(import.meta.env.VITE_BACKEND_API, getSocketOptions());

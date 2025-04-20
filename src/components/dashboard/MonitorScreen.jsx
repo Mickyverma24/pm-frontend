@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Mem from "./Mem";
 import Cpu from "./Cpu";
 import Info from "./Info";
-import socket from "../utils/socketConnection.js";
+import socket from "./../../utils/socketConnection";
 import "./Moniter.css";
 
 const MonitorScreen = ({ data }) => {
