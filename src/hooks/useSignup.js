@@ -2,33 +2,42 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../contexts/AuthContext";
 
-
-
 const useSignup = () => {
 	const [loading, setLoading] = useState(false);
-	const {authUser,setAuthUser} = useAuthContext();
+	const { setAuthUser } = useAuthContext();
 
-	const signup = async ({ fullName, username, password, confirmPassword, gender }) => {
-		const success = handleInputErrors({ fullName, username, password, confirmPassword, gender });
+	const signup = async ({ name, email, password, confirmPassword }) => {
+		const success = handleInputErrors({ name, email, password, confirmPassword });
 		if (!success) return;
 
 		setLoading(true);
 		try {
-			const res = await fetch("/api/auth/signup", {
+			const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/api/auth/signup`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ fullName, username, password, confirmPassword, gender }),
+				body: JSON.stringify({ name, email, password, confirmPassword }),
 			});
-
 
 			const data = await res.json();
 			if (data.error) {
 				throw new Error(data.error);
 			}
-			// save user to local stroage 
-			localStorage.setItem("chat-user",JSON.stringify(data));
-			// make context hook to stay it logged in
-			setAuthUser(data);
+
+			// Store user data in localStorage
+			localStorage.setItem("auth_token", data.auth_token);
+			localStorage.setItem("api_key", data.api_key);
+			localStorage.setItem("name", data.name);
+			localStorage.setItem("email", data.email);
+			
+			// Update auth context
+			setAuthUser({
+				name: data.name,
+				email: data.email,
+				auth_token: data.auth_token,
+				api_key: data.api_key
+			});
+			
+			toast.success("Signup successful!");
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -38,10 +47,9 @@ const useSignup = () => {
 
 	return { loading, signup };
 };
-export default useSignup;
 
-function handleInputErrors({ fullName, username, password, confirmPassword, gender }) {
-	if (!fullName || !username || !password || !confirmPassword || !gender) {
+function handleInputErrors({ name, email, password, confirmPassword }) {
+	if (!name || !email || !password || !confirmPassword) {
 		toast.error("Please fill in all fields");
 		return false;
 	}
@@ -58,3 +66,5 @@ function handleInputErrors({ fullName, username, password, confirmPassword, gend
 
 	return true;
 }
+
+export default useSignup;

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './signup.css'
+import useSignup from '../../hooks/useSignup';
+import { useNavigate } from 'react-router-dom';
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -8,6 +11,9 @@ const Signup = () => {
     confirmPassword: '',
   });
 
+  const { loading, signup } = useSignup();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -15,22 +21,10 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { name, email, password, confirmPassword } = formData;
-
-    if (!name || !email || !password || !confirmPassword) {
-      console.log('Please fill all fields');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      console.log('Passwords do not match');
-      return;
-    }
-
-    console.log('User Data:', { name, email, password, confirmPassword });
+    await signup(formData);
+    navigate('/');
   };
 
   return (
@@ -55,12 +49,12 @@ const Signup = () => {
         <div style={{ marginBottom: '15px' }}>
           <label>Name</label><br />
           <input type="text" name="name" value={formData.name} onChange={handleChange}
-            className = 'input-style' required />
+            className='input-style' required />
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label>Email</label><br />
           <input type="email" name="email" value={formData.email} onChange={handleChange}
-            className = 'input-style' required />
+            className='input-style' required />
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label>Password</label><br />
@@ -70,16 +64,17 @@ const Signup = () => {
         <div style={{ marginBottom: '15px' }}>
           <label>Confirm Password</label><br />
           <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
-            className = 'input-style' required />
+            className='input-style' required />
         </div>
         <div>
-        <a href="/login" className="custom-link">Already have an account?</a>
+          <a href="/login" className="custom-link">Already have an account?</a>
         </div>
-        <button type="submit" className='button-style'>Register</button>
+        <button type="submit" className='button-style' disabled={loading}>
+          {loading ? 'Loading...' : 'Register'}
+        </button>
       </form>
     </div>
   );
 };
-
 
 export default Signup;

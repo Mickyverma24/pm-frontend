@@ -1,28 +1,20 @@
 import "./App.css";
-import Login from "./components/login/Login";
-import SingUp from "./components/signup/Signup";
-import Home from "./components/homepage/Homepage";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuthContext } from "./contexts/AuthContext";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import Login from './components/login/Login';
+import Signup from './components/signup/Signup';
+import Dashboard from './components/dashboard/Dashboard';
+
 function App() {
-  const { authUser } = useAuthContext();
   return (
-    <div>
+    <AuthProvider>
       <Routes>
-        <Route
-          path="/"
-          element={authUser ? <Home /> : <Navigate to={"/login"} />}
-        />
-        <Route
-          path="/login"
-          element={authUser ? <Navigate to="/" /> : <Login />}
-        />
-        <Route
-          path="/signup"
-          element={authUser ? <Navigate to="/" /> : <SingUp />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
-    </div>
+    </AuthProvider>
   );
 }
 
