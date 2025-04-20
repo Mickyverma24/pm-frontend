@@ -10,38 +10,51 @@ export const AuthProvider = ({ children }) => {
 
     const verifyAuth = async () => {
         try {
-            const auth_token = localStorage.getItem('auth_token');
-            const api_key = localStorage.getItem('api_key');
+            const authToken = localStorage.getItem('authToken');
+            const apiKey = localStorage.getItem('apiKey');
             const name = localStorage.getItem('name');
             const email = localStorage.getItem('email');
 
-            if (!auth_token || !api_key || !name || !email) {
-                throw new Error('Missing authentication data');
+            // If any auth data is missing, just set loading to false and return
+            if (!authToken || !apiKey || !name || !email) {
+                setLoading(false);
+                return;
             }
 
             // Verify with backend API
-            const response = await fetch('YOUR_BACKEND_VERIFY_ENDPOINT', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/api/auth/verify`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${auth_token}`,
-                    'x-api-key': api_key
+                    'Authorization': `Bearer ${authToken}`,
+                    'x-api-key': apiKey
                 }
             });
+
+            // Handle specific error cases
+            if (response.status === 403) {
+                // Invalid API key or user not active
+                localStorage.clear();
+                setAuthUser(null);
+                navigate('/login');
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('Authentication failed');
             }
 
+            // If verification is successful, update the auth state
             setAuthUser({
                 name,
                 email,
-                auth_token,
-                api_key
+                authToken,
+                apiKey
             });
         } catch (error) {
             console.error('Auth verification failed:', error);
             localStorage.clear();
             setAuthUser(null);
+            navigate('/login');
         } finally {
             setLoading(false);
         }
