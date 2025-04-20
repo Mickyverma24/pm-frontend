@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import socket from "../../utils/socketConnection";
 import MonitorScreen from "../dashboard/MonitorScreen.jsx";
 import { useAuthContext } from "../../contexts/AuthContext";
-import './homepage.css'
+import "./homepage.css";
 export default function Homepage() {
   const [performanceData, setPerformanceData] = useState({});
   const { authUser, logout } = useAuthContext();
 
-  const handleLogout = () =>{
-    logout()
-  }
+  const handleLogout = () => {
+    logout();
+  };
   useEffect(() => {
     if (!authUser) return;
 
@@ -34,6 +34,9 @@ export default function Homepage() {
   ));
 
   return (
+    <>
+      <button className="button" onClick={handleLogout}>Logout</button>
+
       <div className="container custom">
         {arrayOfMonitors.length > 0 ? (
           arrayOfMonitors
@@ -44,5 +47,6 @@ export default function Homepage() {
           </div>
         )}
       </div>
+    </>
   );
 }
