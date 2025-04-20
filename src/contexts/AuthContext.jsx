@@ -8,35 +8,61 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const logout = () => {
-        localStorage.clear();
-        setAuthUser(null);
-        navigate('/login');
-    };
+    const verifyAuth = async () => {
+        try {
+            const auth_token = localStorage.getItem('auth_token');
+            const api_key = localStorage.getItem('api_key');
+            const name = localStorage.getItem('name');
+            const email = localStorage.getItem('email');
 
-    useEffect(() => {
-        // Check if user is already logged in
-        const auth_token = localStorage.getItem('auth_token');
-        const api_key = localStorage.getItem('api_key');
-        const name = localStorage.getItem('name');
-        const email = localStorage.getItem('email');
+            if (!auth_token || !api_key || !name || !email) {
+                throw new Error('Missing authentication data');
+            }
 
-        if (auth_token && api_key && name && email) {
+            // Verify with backend API
+            const response = await fetch('YOUR_BACKEND_VERIFY_ENDPOINT', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${auth_token}`,
+                    'x-api-key': api_key
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Authentication failed');
+            }
+
             setAuthUser({
                 name,
                 email,
                 auth_token,
                 api_key
             });
+        } catch (error) {
+            console.error('Auth verification failed:', error);
+            localStorage.clear();
+            setAuthUser(null);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
+    };
+
+    useEffect(() => {
+        verifyAuth();
     }, []);
+
+    const logout = () => {
+        localStorage.clear();
+        setAuthUser(null);
+        navigate('/login');
+    };
 
     const value = {
         authUser,
         setAuthUser,
         loading,
-        logout
+        logout,
+        verifyAuth
     };
 
     return (

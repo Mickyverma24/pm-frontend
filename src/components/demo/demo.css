@@ -1,0 +1,30 @@
+.demo-redirect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.demo-redirect h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.demo-redirect p {
+    color: #666;
+    font-size: 16px;
+}
+
+.demo-redirect a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.demo-redirect a:hover {
+    text-decoration: underline;
+}
