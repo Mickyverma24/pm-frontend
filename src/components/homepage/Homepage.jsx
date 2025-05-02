@@ -35,17 +35,21 @@ export default function Homepage() {
 
   return (
     <>
-      <button className="button" onClick={handleLogout}>Logout</button>
+      <div className="wrapper">
+        <button className="button" onClick={handleLogout}>
+          Logout
+        </button>
 
-      <div className="container custom">
-        {arrayOfMonitors.length > 0 ? (
-          arrayOfMonitors
-        ) : (
-          <div className="text-center mt-5">
-            <h3>No performance data available</h3>
-            <p>Waiting for data from connected machines...</p>
-          </div>
-        )}
+        <div className="container custom">
+          {arrayOfMonitors.length > 0 ? (
+            arrayOfMonitors
+          ) : (
+            <div className="text-center mt-5">
+              <h3>No performance data available</h3>
+              <p>Waiting for data from connected machines...</p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
