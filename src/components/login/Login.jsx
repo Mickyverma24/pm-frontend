@@ -3,45 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 import "./login.css";
 import socket from "../../utils/socketConnection";
+import useLogin from "../../hooks/useLogin";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { setAuthUser } = useAuthContext();
+  const {login} = useLogin()
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-
-      // Save to localStorage with correct variable names
-      localStorage.setItem("authToken", data.authToken);
-      localStorage.setItem("apiKey", data.apiKey);
-      localStorage.setItem("name", data.name);
-      localStorage.setItem("email", data.email);
-
-      setAuthUser({
-        name: data.name,
-        email: data.email,
-        authToken: data.authToken,
-        apiKey: data.apiKey,
-      });
+    try { 
+      await login({email,password})
       if (socket && !socket.connected) {
         socket.connect(); // Establish connection
         // socket.emit('welcome', { message: 'User has logged in!' }); // Emit welcome event

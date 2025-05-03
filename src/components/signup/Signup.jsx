@@ -3,6 +3,7 @@ import "./signup.css";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 import socket from "../../utils/socketConnection";
+import useSignup from "../../hooks/useSignup";
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,53 +11,14 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const { setAuthUser } = useAuthContext();
+  const{signup} = useSignup();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            confirmPassword,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Signup failed");
-      }
-
-      const data = await response.json();
-
-      // Save to localStorage with correct variable names
-      localStorage.setItem("authToken", data.authToken);
-      localStorage.setItem("apiKey", data.apiKey);
-      localStorage.setItem("name", data.name);
-      localStorage.setItem("email", data.email);
-
-      setAuthUser({
-        name: data.name,
-        email: data.email,
-        authToken: data.authToken,
-        apiKey: data.apiKey,
-      });
+    try{
+      await signup({name,email,password,confirmPassword})
       // when users get's signed up then socket.connect
       if (socket && !socket.connected) {
         socket.connect(); // Establish connection
