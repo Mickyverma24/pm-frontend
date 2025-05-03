@@ -13,7 +13,7 @@ const Signup = () => {
   const { setAuthUser } = useAuthContext();
   const{signup} = useSignup();
   const navigate = useNavigate();
-
+  const demoUrl = import.meta.env.VITE_DEMO_URL
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,6 +114,9 @@ const Signup = () => {
         <div>
           <a href="/login" className="custom-link">
             Already have an account?
+          </a>
+          <a href={demoUrl} target="_blank" className="custom-link">
+            Want to see demo? 
           </a>
         </div>
         <button type="submit" className="button-style">
