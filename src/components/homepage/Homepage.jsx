@@ -39,7 +39,7 @@ export default function Homepage() {
         <button className="button" onClick={handleLogout}>
           Logout
         </button>
-
+        <div className="client-repo"><a href="https://github.com/Mickyverma24/client-cli" target="_blank">Get client</a></div>
         <div className="container custom">
           {arrayOfMonitors.length > 0 ? (
             arrayOfMonitors

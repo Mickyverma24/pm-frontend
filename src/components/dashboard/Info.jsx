@@ -16,6 +16,9 @@ const Info = ({ data }) => {
       <div className="widget-text">
         <strong>Clock Speed:</strong> {data.cpuSpeed}
       </div>
+      <div className="widget-text">
+        <strong>Host Name:</strong> {data.hostName}
+      </div>
     </div>
   );
 };

@@ -30,12 +30,13 @@ const MonitorScreen = ({ data }) => {
     numCores,
     cpuSpeed,
     cpuLoad,
+    hostName,
     mac,
   } = data;
   console.log(data)
   const cpuData = { cpuLoad };
   const memData = { freeMemory, totalMemory, inUseMem, memUsage };
-  const cpuInfo = { osType, upTime, cpuType, numCores, cpuSpeed };
+  const cpuInfo = { osType, upTime, cpuType, numCores, cpuSpeed, hostName };
   return (
     <div className="moniter row justify-content-evenly">
       {isLive}
