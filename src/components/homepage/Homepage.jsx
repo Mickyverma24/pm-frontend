@@ -6,7 +6,8 @@ import "./homepage.css";
 export default function Homepage() {
   const [performanceData, setPerformanceData] = useState({});
   const { authUser, logout } = useAuthContext();
-
+  const authKey = authUser.apiKey
+  const hostUrl = import.meta.env.VITE_BACKEND_API
   const handleLogout = () => {
     logout();
   };
@@ -33,13 +34,37 @@ export default function Homepage() {
     <MonitorScreen data={d} key={d.mac} />
   ));
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert(`${text} copied to clipboard`);
+  };
+
   return (
     <>
       <div className="wrapper">
         <button className="button" onClick={handleLogout}>
           Logout
         </button>
-        <div className="client-repo"><a href="https://github.com/Mickyverma24/client-cli" target="_blank">Get client</a></div>
+        <div className="sasta-nav">
+          <div className="client-repo">
+            <a
+              href="https://github.com/Mickyverma24/client-cli"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get client
+            </a>
+          </div>
+
+          <div className="copy-box" onClick={() => copyToClipboard(authKey)}>
+            <span className="label">Auth key</span>
+          </div>
+
+          <div className="copy-box" onClick={() => copyToClipboard(hostUrl)}>
+            <span className="label">Host url</span>
+          </div>
+        </div>
+
         <div className="container custom">
           {arrayOfMonitors.length > 0 ? (
             arrayOfMonitors

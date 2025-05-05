@@ -30,3 +30,33 @@
 .client-repo:hover{
     color: blue
 }
+.sasta-nav {
+    display: flex;
+    gap: 20px;
+    /* background-color: #f5f5f5; */
+    padding: 3px;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .copy-box {
+    cursor: pointer;
+    /* background-color: #e0e0e0; */
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    color:rgb(129, 129, 177)
+  }
+  
+  .copy-box:hover {
+    background-color: #696666;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .value {
+    font-family: monospace;
+    color: #333;
+  }
